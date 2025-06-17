@@ -1,7 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"github.com/doconnell2020/ghoton/spectra"
+	"strings"
+
+	//"github.com/doconnell2020/ghoton/spectra"
 	"os"
 )
 
@@ -17,5 +22,15 @@ func readCsv(path string) []byte {
 func main() {
 	path := os.Args[1]
 	content := readCsv(path)
-	fmt.Println("Content is :\n ", string(content))
+	arr := strings.Split(content, []string("\n"))
+	datum := arr[11]
+	spec, err := spectra.NewSpectrumFromArray(string(datum))
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	fmt.Println("Content is :\n ", spec)
+
+	//data = spectra.Spectra{}
 }
