@@ -14,11 +14,11 @@ func NewSpectrumFromArray(data []string) (*Spectrum, error) {
 		return nil, fmt.Errorf("insufficient data: got %d, need 292", len(data))
 	}
 	s := &Spectrum{}
-
 	v := reflect.ValueOf(s).Elem()
 
 	// Iterate over teh remaining fields to populate spectrum
 	for i := 2; i < v.NumField() && i < len(data); i++ {
+		// TODO Capture all items into type
 		field := v.Field(i)
 		if !field.CanSet() {
 			continue
