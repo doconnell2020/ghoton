@@ -12,12 +12,11 @@ type Spectra struct {
 
 func (sp *Spectrum) String() string {
 	v := reflect.ValueOf(sp).Elem()
-	t := reflect.TypeOf(sp).Elem()
 
 	var builder strings.Builder
 	builder.WriteString("Spectrum{\n")
 
-	for i := 0; i < v.NumField(); i++ {
+	for i := range v.NumField() {
 		field := v.Field(i)
 		fieldType := field.Type()
 
@@ -31,12 +30,11 @@ func (sp *Spectrum) String() string {
 			valueStr = fmt.Sprintf("%v", field.Interface())
 		}
 
-		builder.WriteString(fmt.Sprintf("  %s: %s\n", fieldType.Name, valueStr))
+		builder.WriteString(fmt.Sprintf("  %s: %s\n", fieldType.Name(), valueStr))
 	}
 
 	builder.WriteString("}")
 	return builder.String()
-	}
 }
 
 func NewSpectrumFromArray(data []string) (*Spectrum, error) {
