@@ -49,7 +49,7 @@ func main() {
 			if floatVal, err := strconv.ParseFloat(arr_datum[i], 32); err == nil {
 				field.SetFloat(floatVal)
 			} else {
-				fmt.Println("Error parsing float for field %d %v\n", i, err)
+				fmt.Printf("Error parsing float for field %d %v\n", i, err)
 			}
 		case reflect.String:
 			field.SetString(arr_datum[i])
@@ -58,7 +58,7 @@ func main() {
 			if err == nil {
 				field.SetInt(int64(intVal))
 			} else {
-				fmt.Println("Error parsing int for field %d %v\n", i, err)
+				fmt.Printf("Error parsing int for field %d %v\n", i, err)
 
 			}
 		default:
