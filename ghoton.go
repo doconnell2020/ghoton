@@ -3,9 +3,13 @@ package main
 import (
 	"fmt"
 	"github.com/doconnell2020/ghoton/spectra"
-	"reflect"
 	"strconv"
 	"strings"
+
+	"gonum.org/v1/plot"
+	"gonum.org/v1/plot/plotter"
+	"gonum.org/v1/plot/plotutil"
+	"gonum.org/v1/plot/vg"
 
 	//"github.com/doconnell2020/ghoton/spectra"
 	"os"
@@ -35,36 +39,12 @@ func main() {
 		os.Exit(1)
 	}
 	s.Dilution = atoi
-	v := reflect.ValueOf(s).Elem()
-
-	// Iterate over the remaining fields to populate spectrum
-	for i := 3; i < v.NumField() && i < len(arr_datum); i++ {
-		// TODO Capture all items into type
-		field := v.Field(i)
-		if !field.CanSet() {
-			continue
+	for _, i := range arr_datum[3:] {
+		j, err := strconv.ParseFloat(i, 32)
+		if err != nil {
+			fmt.Println("Error while converting wavelength: ", i)
 		}
-		switch field.Type().Kind() {
-		case reflect.Float32:
-			if floatVal, err := strconv.ParseFloat(arr_datum[i], 32); err == nil {
-				field.SetFloat(floatVal)
-			} else {
-				fmt.Printf("Error parsing float for field %d %v\n", i, err)
-			}
-		case reflect.String:
-			field.SetString(arr_datum[i])
-		case reflect.Int:
-			intVal, err := strconv.Atoi(arr_datum[i])
-			if err == nil {
-				field.SetInt(int64(intVal))
-			} else {
-				fmt.Printf("Error parsing int for field %d %v\n", i, err)
-
-			}
-		default:
-			panic("unhandled default case")
-		}
-
+		s.Data = append(s.Data, float32(j))
 	}
 
 	fmt.Println(
@@ -72,5 +52,4 @@ func main() {
 		*s,
 	)
 
-	//data = spectra.Spectra{}
 }
