@@ -2,14 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/doconnell2020/ghoton/plot"
 	"github.com/doconnell2020/ghoton/spectra"
 	"strconv"
 	"strings"
-
-	"gonum.org/v1/plot"
-	"gonum.org/v1/plot/plotter"
-	"gonum.org/v1/plot/plotutil"
-	"gonum.org/v1/plot/vg"
 
 	//"github.com/doconnell2020/ghoton/spectra"
 	"os"
@@ -44,12 +40,18 @@ func main() {
 		if err != nil {
 			fmt.Println("Error while converting wavelength: ", i)
 		}
-		s.Data = append(s.Data, float32(j))
+		s.Data = append(
+			s.Data,
+			j,
+		)
 	}
 
 	fmt.Println(
 		"Content is :\n ",
 		*s,
 	)
-
+	err = plot.Spectrum(s.Data, "points.png")
+	if err != nil {
+		return
+	}
 }

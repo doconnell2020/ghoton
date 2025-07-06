@@ -64,5 +64,5 @@ type Spectrum struct {
 	Well     string
 	Name     string
 	Dilution int
-	Data     []float32
+	Data     []float64
 }
