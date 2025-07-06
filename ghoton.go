@@ -50,7 +50,7 @@ func main() {
 		"Content is :\n ",
 		*s,
 	)
-	err = plot.Spectrum(s.Data, "points.png")
+	err = plot.Spectrum(s.Data, "output/points.png")
 	if err != nil {
 		return
 	}
