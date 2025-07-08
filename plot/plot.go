@@ -35,7 +35,7 @@ func Spectrum(data []float64, filename string) error {
 	p.Add(line)
 	p.Legend.Add("Sample", line)
 	if err := p.Save(8*vg.Inch, 8*vg.Inch, filename); err != nil {
-		return (err)
+		return err
 	}
 	return nil
 }

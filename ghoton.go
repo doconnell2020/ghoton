@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"github.com/doconnell2020/ghoton/plot"
 	"github.com/doconnell2020/ghoton/spectra"
+	"os"
 	"strconv"
 	"strings"
-
-	//"github.com/doconnell2020/ghoton/spectra"
-	"os"
 )
 
 func readCsv(path string) []byte {
@@ -25,17 +23,17 @@ func main() {
 	content := readCsv(path)
 	arr := strings.Split(string(content), string("\n"))
 	datum := arr[11]
-	arr_datum := strings.Split(string(datum), string(","))
+	arrDatum := strings.Split(string(datum), string(","))
 	s := &spectra.Spectrum{}
-	s.Well = arr_datum[0]
-	s.Name = arr_datum[1]
-	atoi, err := strconv.Atoi(arr_datum[2])
+	s.Well = arrDatum[0]
+	s.Name = arrDatum[1]
+	atoi, err := strconv.Atoi(arrDatum[2])
 	if err != nil {
-		fmt.Println("Error while converting dilution: ", arr_datum[1])
+		fmt.Println("Error while converting dilution: ", arrDatum[1])
 		os.Exit(1)
 	}
 	s.Dilution = atoi
-	for _, i := range arr_datum[3:] {
+	for _, i := range arrDatum[3:] {
 		j, err := strconv.ParseFloat(i, 32)
 		if err != nil {
 			fmt.Println("Error while converting wavelength: ", i)
