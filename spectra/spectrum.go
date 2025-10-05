@@ -3,13 +3,22 @@ package spectra
 import (
 	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 )
+
+type Spectrum struct {
+	Well     string
+	Name     string
+	Dilution int
+	Data     []float64
+}
 
 type Spectra struct {
 	data []Spectrum
 }
 
+// Provide a cleaner string representation for print functions
 func (sp *Spectrum) String() string {
 	v := reflect.ValueOf(sp).Elem()
 
@@ -42,27 +51,26 @@ func NewSpectrumFromArray(data []string) (*Spectrum, error) {
 		return nil, fmt.Errorf("insufficient data: got %d, need 292", len(data))
 	}
 	s := &Spectrum{}
-	v := reflect.ValueOf(s).Elem()
-
-	// Iterate over the remaining fields to populate spectrum
-	for i := 0; i < v.NumField() && i < len(data); i++ {
-		// TODO Capture all items into type
-		field := v.Field(i)
-		if !field.CanSet() {
-			continue
-		}
-		dataValue := reflect.ValueOf(data[i])
-		if dataValue.Type().ConvertibleTo(field.Type()) {
-			field.Set(dataValue.Convert(field.Type()))
-		}
-
+	s.Well = data[0]
+	s.Name = data[1]
+	atoi, err := strconv.Atoi(data[2])
+	if err != nil {
+		fmt.Println("Error while converting dilution: ", data[1])
+		return nil, err
 	}
-	return s, nil
-}
+	s.Dilution = atoi
+	for _, i := range data[3:] {
+		j, err := strconv.ParseFloat(i, 32)
+		if err != nil {
+			fmt.Println("Error while converting wavelength: ", i)
+			return nil, err
+		}
+		s.Data = append(
+			s.Data,
+			j,
+		)
+	}
 
-type Spectrum struct {
-	Well     string
-	Name     string
-	Dilution int
-	Data     []float64
+	return s, nil
+
 }

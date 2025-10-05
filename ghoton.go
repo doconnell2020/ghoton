@@ -5,7 +5,6 @@ import (
 	"github.com/doconnell2020/ghoton/plot"
 	"github.com/doconnell2020/ghoton/spectra"
 	"os"
-	"strconv"
 	"strings"
 )
 
@@ -24,26 +23,11 @@ func main() {
 	arr := strings.Split(string(content), string("\n"))
 	datum := arr[11]
 	arrDatum := strings.Split(string(datum), string(","))
-	s := &spectra.Spectrum{}
-	s.Well = arrDatum[0]
-	s.Name = arrDatum[1]
-	atoi, err := strconv.Atoi(arrDatum[2])
-	if err != nil {
-		fmt.Println("Error while converting dilution: ", arrDatum[1])
-		os.Exit(1)
-	}
-	s.Dilution = atoi
-	for _, i := range arrDatum[3:] {
-		j, err := strconv.ParseFloat(i, 32)
-		if err != nil {
-			fmt.Println("Error while converting wavelength: ", i)
-		}
-		s.Data = append(
-			s.Data,
-			j,
-		)
-	}
 
+	s, err := spectra.NewSpectrumFromArray(arrDatum)
+	if err != nil {
+		fmt.Println("Error creating spectrum: ", err)
+	}
 	fmt.Println(
 		"Content is :\n ",
 		*s,
