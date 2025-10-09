@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/doconnell2020/ghoton/plot"
+	// "github.com/doconnell2020/ghoton/plot"
 	"github.com/doconnell2020/ghoton/spectra"
 	"os"
 	"strings"
@@ -32,8 +32,8 @@ func main() {
 		"Content is :\n ",
 		*s,
 	)
-	err = plot.Spectrum(s.Data, "output/points.png")
-	if err != nil {
-		return
-	}
+	// err = plot.Spectrum(s.Data, "output/points.png")
+	// if err != nil {
+	// 	return
+	// }
 }
