@@ -11,7 +11,7 @@ type Spectrum struct {
 	Well     string
 	Name     string
 	Dilution int
-	Data     []float64
+	Data     [291]float64
 }
 
 type Spectra struct {
@@ -19,7 +19,7 @@ type Spectra struct {
 }
 
 // Provide a cleaner string representation for print functions
-func (sp *Spectrum) String() string {
+func (sp Spectrum) String() string {
 	v := reflect.ValueOf(sp).Elem()
 
 	var builder strings.Builder
@@ -59,16 +59,13 @@ func NewSpectrumFromArray(data []string) (*Spectrum, error) {
 		return nil, err
 	}
 	s.Dilution = atoi
-	for _, i := range data[3:] {
+	for idx, i := range data[3:] {
 		j, err := strconv.ParseFloat(i, 32)
 		if err != nil {
 			fmt.Println("Error while converting wavelength: ", i)
 			return nil, err
 		}
-		s.Data = append(
-			s.Data,
-			j,
-		)
+		s.Data[idx] = j
 	}
 
 	return s, nil
