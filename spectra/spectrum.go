@@ -2,7 +2,6 @@ package spectra
 
 import (
 	"fmt"
-	"reflect"
 	"strconv"
 	"strings"
 )
@@ -20,30 +19,18 @@ type Spectra struct {
 
 // Provide a cleaner string representation for print functions
 func (sp Spectrum) String() string {
-	v := reflect.ValueOf(sp).Elem()
-
 	var builder strings.Builder
-	builder.WriteString("Spectrum{\n")
-
-	for i := range v.NumField() {
-		field := v.Field(i)
-		fieldType := field.Type()
-
-		var valueStr string
-		switch field.Kind() {
-		case reflect.Float32, reflect.Float64:
-			valueStr = fmt.Sprintf("%.2f", field.Float())
-		case reflect.String:
-			valueStr = fmt.Sprintf("\"%s\"", field.String())
-		default:
-			valueStr = fmt.Sprintf("%v", field.Interface())
-		}
-
-		builder.WriteString(fmt.Sprintf("  %s: %s\n", fieldType.Name(), valueStr))
+	for i, datum := range sp.Data {
+		wavelength := 220 + i*2
+		builder.WriteString(fmt.Sprintf("\n\u03BB %d: %v", wavelength, datum))
 	}
-
-	builder.WriteString("}")
-	return builder.String()
+	return fmt.Sprintf(
+		"\nWell: %s\nName: %s\nDilution: %v\nWavelength (\u03BB): %s",
+		sp.Well,
+		sp.Name,
+		sp.Dilution,
+		builder.String(),
+	)
 }
 
 func NewSpectrumFromArray(data []string) (*Spectrum, error) {
